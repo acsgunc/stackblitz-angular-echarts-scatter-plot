@@ -1,17 +1,40 @@
-import { Component } from '@angular/core';
-import { bootstrapApplication } from '@angular/platform-browser';
+import { Component } from "@angular/core";
+import { bootstrapApplication } from "@angular/platform-browser";
+import * as echarts from "echarts/core";
+import { provideEchartsCore } from "ngx-echarts";
+import { ScatterChartComponent } from "./app/scatter-chart/scatter-chart";
+
+// ECharts modules
+import { LineChart, ScatterChart } from "echarts/charts";
+import {
+  GridComponent,
+  LegendComponent,
+  TitleComponent,
+  TooltipComponent,
+} from "echarts/components";
+import { CanvasRenderer } from "echarts/renderers";
+
+// 🔧 Register required pieces
+echarts.use([
+  CanvasRenderer,
+  LineChart,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+  GridComponent,
+  ScatterChart,
+]);
 
 @Component({
-  selector: 'app-root',
-  template: `
-    <h1>Hello from {{ name }}!</h1>
-    <a target="_blank" href="https://angular.dev/overview">
-      Learn more about Angular
-    </a>
-  `,
+  selector: "app-root",
+  standalone: true,
+  imports: [ScatterChartComponent],
+  template: ` <app-scatter-chart></app-scatter-chart> `,
 })
 export class App {
-  name = 'Angular';
+  name = "Angular";
 }
 
-bootstrapApplication(App);
+bootstrapApplication(App, {
+  providers: [provideEchartsCore({ echarts })],
+}).catch((err) => console.error(err));
